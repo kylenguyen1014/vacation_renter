@@ -1,0 +1,11 @@
+.NavBar-root.MuiAppBar-root {
+  padding: 0.5rem 1rem;
+  background-color: rgba(245, 245, 245, 0.7);
+}
+
+.NavBar-logo {
+  :hover {
+    cursor: pointer;
+    background-color: transparent !important;
+  }
+}
