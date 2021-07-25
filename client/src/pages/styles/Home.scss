@@ -1,0 +1,105 @@
+.Home {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.5);;
+}
+
+.Home-introduction {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  position: fixed;
+  width: 50%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%); /* for IE 9 */
+  -webkit-transform: translate(-50%, -50%); /* for Safari */
+  text-align: center;
+  
+
+  p, h4, h6 {
+    color: whitesmoke;
+  }
+  & > div {
+    animation: zoomIn 1.5s;
+
+  }
+}
+
+.Home-slide {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Home-slide li {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: homeAnimate 40s linear infinite;
+
+  &:nth-child(1) {
+    background-image: url("../../images/cover1.jpg");
+  }
+  &:nth-child(2) {
+    background-image: url("../../images/cover2.jpg");
+    animation-delay: 5s;
+  }
+  &:nth-child(3) {
+    background-image: url("../../images/cover3.jpg");
+    animation-delay: 10s;
+  }
+  &:nth-child(4) {
+    background-image: url("../../images/cover4.jpg");
+    animation-delay: 15s;
+  }
+  &:nth-child(5) {
+    background-image: url("../../images/cover5.jpg");
+    animation-delay: 20s;
+  }
+  &:nth-child(6) {
+    background-image: url("../../images/cover6.jpg");
+    animation-delay: 25s;
+  }
+  &:nth-child(7) {
+    background-image: url("../../images/cover7.jpg");
+    animation-delay: 30s;
+  }
+}
+
+@keyframes homeAnimate {
+  0% {
+    opacity: 0;
+    transform: scale(1.4);
+    // animation-timing-function: ease-out;
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1.2);
+    // animation-timing-function: ease-in;
+  }
+  20% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
