@@ -1,12 +1,21 @@
 import React, { ReactElement, useState } from 'react'
-import { AppBar, Button, Grid, Popover, Typography } from '@material-ui/core';
-import { House, Person } from '@material-ui/icons';
+import { AppBar, Button, Divider, Grid, Popover, Slide, Typography } from '@material-ui/core';
+import { House, Menu, Person, PowerSettingsNew } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../routes/routes';
 import './NavBar.scss';
+import { RootState } from '../../redux/root-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { openSignInOrUpForm, setToSignIn, setToSignUp } from '../../redux/popup.slices/popup.slices';
+import feathersClient from '../../API/feathersClient';
+import { clearCurrentUser } from '../../redux/user.slices/user.slices';
+import Swal from 'sweetalert2';
+import { errorMessageReturn } from '../../utils/errorMesageReturnUtils';
 
 function NavBar(): ReactElement {
     const history = useHistory()
+    const dispatch = useDispatch()
+    const { currentUser } = useSelector((state: RootState) => state.user)
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
     const handleClickLogo = () => {
@@ -17,16 +26,48 @@ function NavBar(): ReactElement {
         history.push(ROUTES._RENTAL)
     }
 
-    const handleSetAnchorEl = (e : React.MouseEvent<HTMLButtonElement>) => {
+    const handleSetAnchorEl = (e: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(e.currentTarget)
     }
-    
+
     const handleClosePopover = () => {
         setAnchorEl(null)
     }
+
+    const handleClickSignUp = () => {
+        dispatch(openSignInOrUpForm())
+        dispatch(setToSignUp())
+        handleClosePopover()
+    }
+
+    const handleClickSignIn = () => {
+        dispatch(openSignInOrUpForm())
+        dispatch(setToSignIn())
+        handleClosePopover()
+    }
+
+    const handleClickSignOut = () => {
+        feathersClient.logout()
+            .then(() => {
+                handleClosePopover()
+            })
+            .catch(err => {
+                Swal.fire({
+                    title: 'Failed to logout',
+                    text: errorMessageReturn(err),
+                    icon: 'error',
+                    toast: true,
+                })
+            })
+    }
+    
+    const handleClickHostYourHome = () => {
+        history.push(ROUTES._HOST_A_RENTAL)
+        handleClosePopover()
+    }
     
 
-    const isOpen = Boolean (anchorEl)
+    const isOpen = Boolean(anchorEl)
     return (
         <div>
             <AppBar classes={{ root: 'NavBar-root' }} color='inherit' position='sticky'>
@@ -46,10 +87,10 @@ function NavBar(): ReactElement {
                     <Grid item>
                         <Grid container spacing={1}>
                             <Grid item>
-                                <Button variant='text' onClick={handleClickExplore}>Explore</Button>
+                                <Button variant='text' size='large' onClick={handleClickExplore}>Explore</Button>
                             </Grid>
                             <Grid item>
-                                <Button variant='text' onClick={handleSetAnchorEl}><Person /></Button>
+                                <Button variant='contained' size='large' startIcon={<Menu />} onClick={handleSetAnchorEl}><Person /></Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -66,8 +107,45 @@ function NavBar(): ReactElement {
                         vertical: 'top',
                         horizontal: 'right',
                     }}
+                    className='NavBar-profile-popover'
                 >
-                    <Typography >The content of the Popover.</Typography>
+                    <div className='NavBar-profile-popover-container'>
+                        <Grid container spacing={1} >
+                            <Grid item xs={12}>
+                                <Grid container spacing={1} justifyContent='center' alignItems='center'>
+                                    <Grid item>
+                                        <House />
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant='subtitle1'> V-Rental </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
+
+                                <Divider />
+                            </Grid>
+                            {!currentUser
+                                ? <>
+                                    <Grid item xs={12}>
+                                        <Button fullWidth onClick={handleClickSignUp}>Sign Up</Button>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button fullWidth onClick={handleClickSignIn}>Login</Button>
+                                    </Grid>
+                                </>
+                                : <>
+                                    <Grid item xs={12}>
+                                        <Button fullWidth color='secondary' startIcon={<PowerSettingsNew />} onClick={handleClickSignOut}>Sign Out</Button>
+                                    </Grid>
+                                    <Divider flexItem />
+                                    <Grid item xs={12}>
+                                        <Button fullWidth onClick={handleClickHostYourHome}>Host your home</Button>
+                                    </Grid>
+                                </>
+                            }
+                        </Grid>
+                    </div>
                 </Popover>
             </AppBar>
         </div>
