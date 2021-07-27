@@ -2,3 +2,21 @@
   width: 100vw;
   height: 100vh;
 }
+
+.App-body {
+  padding: 1rem ;
+}
+.App-backdrop {
+  color: #fff;
+  
+  div {
+    width: 100vw;
+    position: fixed;
+    height: 1.5px;
+    top: 0
+  }
+}
+
+.swal2-container {
+  z-index: 3000 !important;
+}

@@ -1,7 +1,9 @@
-import { createTheme } from "@material-ui/core";
+import { createTheme, unstable_createMuiStrictModeTheme } from "@material-ui/core";
 import { blue, red } from "@material-ui/core/colors";
 
-export const theme = createTheme({
+const createMuiTheme = process.env.NODE_ENV === 'production' ? createTheme : unstable_createMuiStrictModeTheme;
+
+export const theme = createMuiTheme({
     palette: {
         primary : {
           main : blue[500]
@@ -27,7 +29,7 @@ export const theme = createTheme({
         },
     },
     shape: {
-        borderRadius: 20,
+        borderRadius: 10,
     },
     props: {
       }
