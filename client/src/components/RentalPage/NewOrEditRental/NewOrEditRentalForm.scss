@@ -1,0 +1,21 @@
+.address-suggestion {
+  color: blue;
+}
+
+.Image-dropzone {
+  border: 1px dashed grey;
+  padding: 1.5rem 2rem;
+  background-color: rgba(143, 131, 131, 0.2);
+
+  &:hover {
+      cursor: pointer;
+      background-color: lighten($color: rgba(143, 131, 131, 0.2), $amount: 20);
+  }
+  &:focus {
+      border-color: blue;
+  }
+  p {
+    text-align: center;
+    color: grey;
+  }
+}
