@@ -7,15 +7,12 @@ import Rental from './pages/Rental';
 import NavBar from './components/NavBar/NavBar';
 import LogInOrSignUpForm from './components/NavBar/LogInOrSignUpForm/LogInOrSignUpForm';
 import '@fontsource/roboto';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCurrentUser, saveCurrentUser } from './redux/user.slices/user.slices';
-import { Backdrop, Container, LinearProgress } from '@material-ui/core';
+import { Backdrop, LinearProgress } from '@material-ui/core';
 import { RootState } from './redux/root-reducer';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import feathersClient from './API/feathersClient';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import HostARental from './pages/HostARental';
 
 function App() {
   const dispatch = useDispatch()
