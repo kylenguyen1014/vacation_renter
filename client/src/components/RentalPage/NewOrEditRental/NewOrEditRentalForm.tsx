@@ -11,6 +11,10 @@ import { ArrowBack, Send } from '@material-ui/icons'
 import Swal from 'sweetalert2'
 import feathersClient from '../../../API/feathersClient'
 import { FeatherServices } from '../../../API/featherServices'
+import { Rental } from '../../../shared/interfaces/Rental'
+import { useDispatch } from 'react-redux'
+import { fetchDataBegin, fetchDataStop } from '../../../redux/fetching.slices/fetching.slices'
+import { errorMessageReturn } from '../../../utils/errorMesageReturnUtils'
 
 type FormInput = {
     name: string;
@@ -30,11 +34,12 @@ interface FileUpload extends FileWithPath {
     preview: string;
 }
 function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
+    const dispatch = useDispatch()
     const [files, setFiles] = useState<FileUpload[]>([])
     const [locations, setLocations] = useState<Feature[]>([])
     const { getRootProps, getInputProps } = useDropzone({
         accept: 'image/jpeg, image/png, image/jpg',
-        onDrop: acceptedFiles => {
+        onDrop: (acceptedFiles : FileWithPath[]) => {
             setFiles(acceptedFiles.map(file => Object.assign(file, { preview: URL.createObjectURL(file) })))
         }
     });
@@ -58,18 +63,43 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
         setLocations([])
     }
 
-    const submit = (data: FormInput) => {
-        const packet = {
-            ...data,
-            spec : {
-                bath: data.bath,
-                bed: data.bed
-            },
-            address: data.address?.place_name,
-            images : files,
-            geometry: data.address?.geometry
+
+    const submit = async (data: FormInput) => {
+        const fd = new FormData()
+        fd.append('images', JSON.stringify(files))
+        fd.append('name', data.name)
+        fd.append('description', data.description)
+        fd.append('spec', JSON.stringify({bath: data.bath, bed:data.bed}))
+        fd.append('address', data.address?.place_name || '')
+        fd.append('geometry', JSON.stringify(data.address?.geometry) || '')
+        fd.append('price', data.price.toString())
+        // const packet = {
+        //     ...data,
+        //     spec : {
+        //         bath: data.bath,
+        //         bed: data.bed
+        //     },
+        //     address: data.address?.place_name,
+        //     images : files,
+        //     geometry: data.address?.geometry
+        // }
+        try {
+            dispatch(fetchDataBegin())
+            const newRental : Rental = await feathersClient.service(FeatherServices.rentals).create(fd, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              })
+            console.log(newRental)
+            dispatch(fetchDataStop())
+        } catch (error) {
+            dispatch(fetchDataStop())
+            Swal.fire({
+                title: `Failed to ${isEditting ? 'edit' : 'host'} rental`,
+                text: errorMessageReturn(error),
+                icon: 'error'
+            })
         }
-        feathersClient.service(FeatherServices.rentals).create(packet)
     }
 
     const thumbs = files.map(file => (
@@ -173,6 +203,15 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
                             }
                             defaultValue={1}
                             rules={{ required: true, min: 1 }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant='subtitle2'>Description</Typography>
+                        <Controller
+                            control={control}
+                            name='description'
+                            render={({ field }) => <TextField variant='outlined' fullWidth  {...field} multiline minRows={5} maxRows={5} />}
+                            defaultValue=''
                         />
                     </Grid>
                     <Grid item xs={12}>
