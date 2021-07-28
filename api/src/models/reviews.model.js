@@ -12,6 +12,10 @@ module.exports = function (app) {
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User'
+    },
+    rental: {
+      type: Schema.Types.ObjectId,
+      ref: 'Rental'
     }
   }, {
     timestamps: true
