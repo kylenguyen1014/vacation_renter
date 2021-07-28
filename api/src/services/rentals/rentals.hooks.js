@@ -1,20 +1,40 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
 const uploadImageToCloud = require('../../hooks/upload-image-to-cloud');
+const populate = require('feathers-populate-hook');
+const isOwner = require('../../hooks/isOwner');
+
+const linkUserToItem = require('../../hooks/link-user-to-item');
+
+const parseImageUpload = require('../../hooks/parse-image-upload');
 
 module.exports = {
   before: {
-    all: [  ],
+    all: [ populate.compatibility() ],
     find: [],
     get: [],
-    create: [authenticate('jwt'), uploadImageToCloud()],
-    update: [authenticate('jwt')],
-    patch: [authenticate('jwt')],
+    create: [
+      authenticate('jwt'),
+      uploadImageToCloud(),
+      parseImageUpload(),
+      linkUserToItem(),
+    ],
+    update: [authenticate('jwt'), isOwner()],
+    patch: [authenticate('jwt'), isOwner()],
     remove: [authenticate('jwt')]
   },
 
   after: {
-    all: [],
+    all: [populate({
+      user: {
+        service: 'users',
+        f_key: '_id',
+        one: true,
+        query: {
+          $select: ['_id', 'firstName', 'lastName', 'email']
+        }
+      }
+    })],
     find: [],
     get: [],
     create: [],

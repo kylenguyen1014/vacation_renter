@@ -1,5 +1,5 @@
 // rentals-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
@@ -14,7 +14,7 @@ module.exports = function (app) {
 
   const schema = new Schema({
     name: { type: String, required: true },
-    image: [ImageSchema],
+    images: [ImageSchema],
     geometry: {
       type: {
         type: String,
@@ -54,5 +54,5 @@ module.exports = function (app) {
     mongooseClient.deleteModel(modelName);
   }
   return mongooseClient.model(modelName, schema);
-  
+
 };

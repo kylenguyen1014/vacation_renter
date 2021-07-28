@@ -3,20 +3,22 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const {
   hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
+const populate = require('feathers-populate-hook');
+const isOwner = require('../../hooks/isOwner');
 
 module.exports = {
   before: {
     all: [],
-    find: [ authenticate('jwt') ],
-    get: [ authenticate('jwt') ],
+    find: [ ],
+    get: [ ],
     create: [ hashPassword('password') ],
-    update: [ hashPassword('password'),  authenticate('jwt') ],
-    patch: [ hashPassword('password'),  authenticate('jwt') ],
+    update: [ hashPassword('password'),  authenticate('jwt'), isOwner() ],
+    patch: [ hashPassword('password'),  authenticate('jwt') , isOwner()],
     remove: [ authenticate('jwt') ]
   },
 
   after: {
-    all: [ 
+    all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
       protect('password')
