@@ -9,50 +9,61 @@ module.exports = function (app) {
 
   const ImageSchema = new Schema({
     url: { type: String },
-    fileName: { type: String }
+    fileName: { type: String },
   });
 
-  const schema = new Schema({
-    name: { type: String, required: true },
-    images: [ImageSchema],
-    geometry: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        required: true
+  const schema = new Schema(
+    {
+      name: { type: String, required: true },
+      images: [ImageSchema],
+      geometry: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true,
+        },
+        coordinates: {
+          type: [Number],
+          required: true,
+        },
       },
-      coordinates: {
-        type: [Number],
-        required: true
-      }
+      address: { type: String, required: true },
+      price: { type: Number, required: true, min: 0 },
+      spec: {
+        bed: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+        bath: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+      },
+      description: { type: String, default: '' },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
     },
-    address: {type: String, required: true},
-    price: {type: Number, required: true, min: 0},
-    spec : {
-      bed: {
-        type: Number,
-        required: true,
-        min: 1
-      },
-      bath: {
-        type: Number,
-        required: true,
-        min: 1
-      },
-    },
-    description: {type : String, default: ''},
-    user : {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+    {
+      timestamps: true,
+      toJSON: { virtuals: true },
     }
-  }, {
-    timestamps: true
-  });
+  );
   // This is necessary to avoid model compilation errors in watch mode
   // see https://mongoosejs.com/docs/api/connection.html#connection_Connection-deleteModel
   if (mongooseClient.modelNames().includes(modelName)) {
     mongooseClient.deleteModel(modelName);
   }
-  return mongooseClient.model(modelName, schema);
 
+  schema.virtual('rating').get(function () {
+    return 5;
+  });
+
+  // Ensure virtual fields are serialised.
+  schema.set('toJSON', { virtuals: true });
+  schema.set('toObject', { virtuals: true });
+  return mongooseClient.model(modelName, schema);
 };
