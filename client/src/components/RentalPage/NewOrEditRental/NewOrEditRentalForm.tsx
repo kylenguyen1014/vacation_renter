@@ -15,6 +15,8 @@ import { Rental } from '../../../shared/interfaces/Rental'
 import { useDispatch } from 'react-redux'
 import { fetchDataBegin, fetchDataStop } from '../../../redux/fetching.slices/fetching.slices'
 import { errorMessageReturn } from '../../../utils/errorMesageReturnUtils'
+import { useHistory } from 'react-router-dom'
+import { ROUTES } from '../../../routes/routes'
 
 type FormInput = {
     name: string;
@@ -34,6 +36,7 @@ interface FileUpload extends FileWithPath {
     preview: string;
 }
 function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
+    const history = useHistory()
     const dispatch = useDispatch()
     const [files, setFiles] = useState<FileUpload[]>([])
     const [locations, setLocations] = useState<Feature[]>([])
@@ -63,6 +66,13 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
         setLocations([])
     }
 
+    const handleGoBack = () => {
+        history.goBack()
+    }
+
+    const handleGoToRentalDetail = (rentalId : string) => {
+        history.push(ROUTES._RENTAL_DETAIL(rentalId))
+    }
 
     const submit = async (data: FormInput) => {
         const fd = new FormData()
@@ -80,8 +90,8 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
                   'Content-Type': 'multipart/form-data'
                 }
               })
-            console.log(newRental)
             dispatch(fetchDataStop())
+            handleGoToRentalDetail(newRental._id)
         } catch (error) {
             dispatch(fetchDataStop())
             Swal.fire({
@@ -220,7 +230,7 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
                                 <Button variant='contained' fullWidth color='primary' type='submit' startIcon={<Send />}>Submit</Button>
                             </Grid>
                             <Grid item xs={6}>
-                                <Button variant='contained' fullWidth color='secondary' startIcon={<ArrowBack />}>Back</Button>
+                                <Button variant='contained' fullWidth color='secondary' startIcon={<ArrowBack />} onClick={handleGoBack}>Back</Button>
                             </Grid>
                         </Grid>
                     </Grid>
