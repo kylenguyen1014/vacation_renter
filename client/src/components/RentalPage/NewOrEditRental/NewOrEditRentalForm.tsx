@@ -66,23 +66,13 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
 
     const submit = async (data: FormInput) => {
         const fd = new FormData()
-        fd.append('images', JSON.stringify(files))
+        files.forEach(file => fd.append('images', file))
         fd.append('name', data.name)
         fd.append('description', data.description)
         fd.append('spec', JSON.stringify({bath: data.bath, bed:data.bed}))
         fd.append('address', data.address?.place_name || '')
         fd.append('geometry', JSON.stringify(data.address?.geometry) || '')
         fd.append('price', data.price.toString())
-        // const packet = {
-        //     ...data,
-        //     spec : {
-        //         bath: data.bath,
-        //         bed: data.bed
-        //     },
-        //     address: data.address?.place_name,
-        //     images : files,
-        //     geometry: data.address?.geometry
-        // }
         try {
             dispatch(fetchDataBegin())
             const newRental : Rental = await feathersClient.service(FeatherServices.rentals).create(fd, {
