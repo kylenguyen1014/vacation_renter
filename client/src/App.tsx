@@ -7,44 +7,59 @@ import Rental from './pages/Rental';
 import NavBar from './components/NavBar/NavBar';
 import LogInOrSignUpForm from './components/NavBar/LogInOrSignUpForm/LogInOrSignUpForm';
 import '@fontsource/roboto';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { clearCurrentUser, saveCurrentUser } from './redux/user.slices/user.slices';
-import { Backdrop, LinearProgress } from '@material-ui/core';
-import { RootState } from './redux/root-reducer';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import feathersClient from './API/feathersClient';
+import { ReactQueryDevtools } from "react-query/devtools";
+import LoadingBackDrop from './components/LoadingBackDrop/LoadingBackDrop';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      // onError: (err) => {
+      //   Toast.error(errorMessageReturn(err))
+
+      // },
+    },
+  }
+})
 
 function App() {
   const dispatch = useDispatch()
-  const { isFetching } = useSelector((state: RootState) => state.fetching)
+  // const isQueryFetching = useIsFetching()
 
   useEffect(() => {
     feathersClient.authenticate()
       .catch(() => dispatch(clearCurrentUser()))
     feathersClient.on('login', (resp) => dispatch(saveCurrentUser(resp.user)))
     feathersClient.on('logout', () => dispatch(clearCurrentUser()))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <ErrorBoundary>
-      <div className="App">
-        <NavBar />
-        <div className='App-body'>
-        <Switch>
-          <Route path='/rentals'>
-            <Rental />
-          </Route>
-          <Route path='/' exact>
-            <Home />
-          </Route>
-        </Switch>
+      <QueryClientProvider client={queryClient}>
+        <div className="App">
+          <NavBar />
+          <div className='App-body'>
+            <Switch>
+              <Route path='/rentals'>
+                <Rental />
+              </Route>
+              <Route path='/' exact>
+                <Home />
+              </Route>
+            </Switch>
+          </div>
+          <LogInOrSignUpForm />
+          <LoadingBackDrop />
+          <ReactQueryDevtools initialIsOpen />
         </div>
-        <LogInOrSignUpForm />
-        <Backdrop open={isFetching} className='App-backdrop' style={{ zIndex: 1300 }}>
-          <LinearProgress color='secondary' />
-        </Backdrop>
-      </div>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

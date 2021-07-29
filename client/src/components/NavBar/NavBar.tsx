@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { AppBar, Button, Divider, Grid, Popover, Slide, Typography } from '@material-ui/core';
+import { AppBar, Button, Divider, Grid, Popover, Typography } from '@material-ui/core';
 import { House, Menu, Person, PowerSettingsNew } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../routes/routes';
@@ -8,7 +8,6 @@ import { RootState } from '../../redux/root-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { openSignInOrUpForm, setToSignIn, setToSignUp } from '../../redux/popup.slices/popup.slices';
 import feathersClient from '../../API/feathersClient';
-import { clearCurrentUser } from '../../redux/user.slices/user.slices';
 import Swal from 'sweetalert2';
 import { errorMessageReturn } from '../../utils/errorMesageReturnUtils';
 
@@ -60,12 +59,12 @@ function NavBar(): ReactElement {
                 })
             })
     }
-    
+
     const handleClickHostYourHome = () => {
         history.push(ROUTES._HOST_A_RENTAL)
         handleClosePopover()
     }
-    
+
 
     const isOpen = Boolean(anchorEl)
     return (

@@ -1,3 +1,5 @@
+import { FeatherPagination } from "./FeatherPagination";
+
 export interface User {
     _id: string;
     email: string;
@@ -10,4 +12,8 @@ export interface User {
 export interface UserAuthenticationResp {
     accessToken: string;
     user: User;
+}
+
+export interface UserListResp extends FeatherPagination {
+    data: User[];
 }

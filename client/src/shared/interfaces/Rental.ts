@@ -1,25 +1,31 @@
+import { FeatherPagination } from "./FeatherPagination";
 import { Geometry } from "./GeoCoding";
 import { User } from "./User";
 
 export interface RentalImage {
-    url : string;
+    url: string;
     fileName: string;
 }
 
 export interface RentalSpec {
-    bed:number;
-    bath:number;
+    bed: number;
+    bath: number;
 }
 
 export interface Rental {
+    _id: string;
     name: string;
     images: RentalImage[];
     geometry: Geometry;
-    address : string;
-    price : number;
+    address: string;
+    price: number;
     spec: RentalSpec;
     description: string;
     user?: User;
-    createdAt : string;
-    updatedAt : string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface RentalListResp extends FeatherPagination {
+    data : Rental[]
 }

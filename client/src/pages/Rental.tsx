@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import CreateARental from '../components/RentalPage/CreateARental/CreateARental'
 import EditARental from '../components/RentalPage/EditARental/EditARental'
+import RentalDetail from '../components/RentalPage/RentalDetail/RentalDetail'
+import RentalList from '../components/RentalPage/RentalList/RentalList'
 import { ROUTES } from '../routes/routes'
 
 
@@ -17,7 +19,10 @@ function Rental(): ReactElement {
                     <EditARental />
                 </Route>
                 <Route path={`${ROUTES._RENTAL}/:rentalId`}>
-                    Detail
+                    <RentalDetail />
+                </Route>
+                <Route path=''>
+                    <RentalList />
                 </Route>
             </Switch>
         </div>
