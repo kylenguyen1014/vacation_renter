@@ -35,5 +35,5 @@
       }
     }
   },
-  "mongodb": "mongodb://localhost:27017/server"
+  "mongodb": "mongodb://mongo:27017/server"
 }
