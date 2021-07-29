@@ -1,12 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-const uploadImageToCloud = require('../../hooks/upload-image-to-cloud');
 const populate = require('feathers-populate-hook');
 const isOwner = require('../../hooks/isOwner');
 
 const linkUserToItem = require('../../hooks/link-user-to-item');
 
-const parseImageUpload = require('../../hooks/parse-image-upload');
 
 module.exports = {
   before: {
@@ -15,8 +13,6 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
-      uploadImageToCloud(),
-      parseImageUpload(),
       linkUserToItem(),
     ],
     update: [authenticate('jwt'), isOwner()],
@@ -33,7 +29,7 @@ module.exports = {
         query: {
           $select: ['_id', 'firstName', 'lastName', 'email']
         }
-      }
+      },
     })],
     find: [],
     get: [],
