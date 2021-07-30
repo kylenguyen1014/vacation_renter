@@ -7,17 +7,18 @@ module.exports = (options = {}) => {
     const {  app, method, result } = context;
 
     const addRating = async rental => {
-      const rating = await app.service('reviews').Model.aggregate([
+      const ratingAndReviewCount = await app.service('reviews').Model.aggregate([
         {$match : {rental : rental._id }},
         {$group: {
           _id: '$rental',
-          rating: {$avg: '$rating'}
+          reviewCount : { $sum: 1 },
+          rating: {$avg: '$rating'},
         }}
       ]);
-
       return {
         ...rental,
-        rating: rating[0] ? rating[0].rating : ''
+        rating: ratingAndReviewCount[0] ? ratingAndReviewCount[0].rating : '',
+        numberReviews: ratingAndReviewCount[0] ? ratingAndReviewCount[0].reviewCount : 0,
       };
     };
 
