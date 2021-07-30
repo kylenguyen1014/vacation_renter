@@ -49,7 +49,6 @@ module.exports = function (app) {
     },
     {
       timestamps: true,
-      toJSON: { virtuals: true },
     }
   );
   // This is necessary to avoid model compilation errors in watch mode
@@ -58,12 +57,5 @@ module.exports = function (app) {
     mongooseClient.deleteModel(modelName);
   }
 
-  schema.virtual('rating').get(function () {
-    return 5;
-  });
-
-  // Ensure virtual fields are serialised.
-  schema.set('toJSON', { virtuals: true });
-  schema.set('toObject', { virtuals: true });
   return mongooseClient.model(modelName, schema);
 };

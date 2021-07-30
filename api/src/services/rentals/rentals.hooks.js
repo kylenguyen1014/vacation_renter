@@ -6,6 +6,9 @@ const isOwner = require('../../hooks/isOwner');
 const linkUserToItem = require('../../hooks/link-user-to-item');
 
 
+const getRating = require('../../hooks/get-rating');
+
+
 module.exports = {
   before: {
     all: [ populate.compatibility() ],
@@ -31,8 +34,8 @@ module.exports = {
         }
       },
     })],
-    find: [],
-    get: [],
+    find: [getRating()],
+    get: [getRating()],
     create: [],
     update: [],
     patch: [],
