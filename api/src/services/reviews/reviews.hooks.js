@@ -5,12 +5,14 @@ const populate = require('feathers-populate-hook');
 
 const linkUserToItem = require('../../hooks/link-user-to-item');
 
+const onlyOneReview = require('../../hooks/only-one-review');
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [authenticate('jwt'), linkUserToItem()],
+    create: [authenticate('jwt'), linkUserToItem(), onlyOneReview()],
     update: [authenticate('jwt'), isOwner()],
     patch: [authenticate('jwt'), isOwner()],
     remove: [authenticate('jwt')]
