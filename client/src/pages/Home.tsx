@@ -20,9 +20,6 @@ function Home(): ReactElement {
                 <li />
                 <li />
                 <li />
-                <li />
-                <li />
-                <li />
             </ul>
             <div className='Home-introduction'>
                 <Grid container spacing={1} direction='column' alignItems='center'>
