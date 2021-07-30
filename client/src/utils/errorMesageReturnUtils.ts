@@ -1,6 +1,10 @@
 import { AxiosError } from "axios"
 
 export const errorMessageReturn = (error : AxiosError) => {
+    if (error.message) {
+        return error.message
+    }
+    
     if (error.request === undefined || error.response === undefined) {
         return 'Network Error'
     }
