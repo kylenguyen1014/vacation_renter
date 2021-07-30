@@ -1,5 +1,5 @@
 // reviews-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
@@ -8,7 +8,7 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const schema = new Schema({
     text: { type: String, required: true },
-    rating: { type: Number, required: true, min: 0, max: 5 },
+    rating: { type: Number, required: true, min: 1, max: 5 },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User'
@@ -27,5 +27,5 @@ module.exports = function (app) {
     mongooseClient.deleteModel(modelName);
   }
   return mongooseClient.model(modelName, schema);
-  
+
 };
