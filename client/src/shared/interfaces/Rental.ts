@@ -24,6 +24,8 @@ export interface Rental {
     user?: User;
     createdAt: string;
     updatedAt: string;
+    rating : number | string;
+    numberReviews : number;
 }
 
 export interface RentalListResp extends FeatherPagination {
