@@ -1,6 +1,6 @@
 import { FeatherPagination } from "./FeatherPagination";
 
-export interface User {
+export interface UserShort {
     _id: string;
     email: string;
     firstName: string;
@@ -8,12 +8,16 @@ export interface User {
     createdAt: string;
     updatedAt: string;
 }
+export interface UserFull extends UserShort {
+    createdAt: string;
+    updatedAt: string;
+}
 
 export interface UserAuthenticationResp {
     accessToken: string;
-    user: User;
+    user: UserFull;
 }
 
 export interface UserListResp extends FeatherPagination {
-    data: User[];
+    data: UserFull[];
 }

@@ -1,6 +1,6 @@
 import { FeatherPagination } from "./FeatherPagination";
 import { Geometry } from "./GeoCoding";
-import { User } from "./User";
+import { UserShort } from "./User";
 
 export interface RentalImage {
     url: string;
@@ -21,7 +21,7 @@ export interface Rental {
     price: number;
     spec: RentalSpec;
     description: string;
-    user?: User;
+    user: UserShort;
     createdAt: string;
     updatedAt: string;
     rating : number | string;
