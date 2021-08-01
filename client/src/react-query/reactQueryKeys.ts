@@ -4,5 +4,6 @@ export const QUERYKEYS = {
     RENTALS: () => 'rentals',
     RENTAL_DETAIL: (rentalId: string) => ['rental', { rentalId }],
     REVIEWS: () => 'reviews',
-    REVIEW_DETAIL: (reviewId: string) => ['review', { reviewId }]
+    REVIEW_DETAIL: (reviewId: string) => ['review', { reviewId }],
+    REVIEWS_BY_RENTAL: (rentalId: string, limit? : number) => [QUERYKEYS.REVIEWS(), { rentalId, limit }]
 }
