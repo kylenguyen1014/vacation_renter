@@ -1,155 +1,172 @@
-@import '../../../App';
-
+@import "../../../App";
 
 .RentalDetail-image-container {
-    width: 100%;
-    height: 30rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 0 0.5rem;
-    grid-auto-flow: row;
-    grid-template-areas:
-        "first first sec third"
-        "first first fourth fifth";
+  width: 100%;
+  height: 30rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0 0.5rem;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "first first sec third"
+    "first first fourth fifth";
+  position: relative;
+
+  & > div {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     position: relative;
-
-
-    &>div {
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        position: relative;
-        border-radius: 5px;
-        border : 1px solid lightgray;
-        // height: fit-content;
-        &:hover:not(:empty) {
-            cursor: pointer;
-            background-color: rgb(0, 0, 0);
-            opacity: 0.8;
-        }
-
-        img {
-            border-radius: inherit;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    // height: fit-content;
+    &:hover:not(:empty) {
+      cursor: pointer;
+      background-color: rgb(0, 0, 0);
+      opacity: 0.8;
     }
+
+    img {
+      border-radius: inherit;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
 }
 
 .RentalDetail-rating {
-    text-decoration: underline;
+  text-decoration: underline;
 
-    &:hover {
-        cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .RentalDetail-image-quantity {
-    display: none;
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    background-color: whitesmoke;
-    color: black;
-    padding: 0 0.5rem;
+  display: none;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: whitesmoke;
+  color: black;
+  padding: 0 0.5rem;
 
-    &:hover {
-        cursor: pointer;
-        background-color: whitesmoke;
-    }
+  &:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+  }
 }
 
 .first {
-    grid-area: first;
-    height: 30rem;
+  grid-area: first;
+  height: 30rem;
 }
 
 .sec {
-    grid-area: sec;
-    height: 15rem;
+  grid-area: sec;
+  height: 15rem;
 }
 
 .third {
-    grid-area: third;
-    height: 15rem;
+  grid-area: third;
+  height: 15rem;
 }
 
 .fourth {
-    grid-area: fourth;
-    height: 15rem;
+  grid-area: fourth;
+  height: 15rem;
 }
 
 .fifth {
-    grid-area: fifth;
-    height: 15rem;
+  grid-area: fifth;
+  height: 15rem;
 }
 
-.RentalDetail-content{
-    padding: 1rem 0;
+.RentalDetail-content {
+  padding: 1rem 0;
 }
 
 #map {
+  height: 30rem;
+}
+
+.RentalDetail-map {
+  height: 30rem;
+}
+
+@media (max-width: $sm) {
+  .RentalDetail-image-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 0;
+    height: 20rem;
+
+    & > div:not(:first-child) {
+      display: none;
+    }
+    & > div:first-child {
+      height: 20rem;
+    }
+  }
+
+  .RentalDetail-image-quantity {
+    display: block;
+  }
+
+  .RentalDetail-map {
+    height: 20rem;
+  }
+}
+
+@media (min-width: $sm) and (max-width: $md) {
+  .RentalDetail-image-container {
+    height: 22rem;
+
+    & > div:not(:first-child) {
+      height: 11rem;
+    }
+    & > div:first-child {
+      height: 22rem;
+    }
+  }
+
+  .RentalDetail-map {
+    height: 22rem;
+  }
+}
+
+@media (min-width: $md) and (max-width: $lg) {
+  .RentalDetail-image-container {
+    height: 28rem;
+
+    & > div:not(:first-child) {
+      height: 14rem;
+    }
+    & > div:first-child {
+      height: 28rem;
+    }
+  }
+
+  .RentalDetail-map {
+    height: 28rem;
+  }
+}
+@media (min-width: $lg) {
+  .RentalDetail-image-container {
     height: 30rem;
-}
 
-@media (max-width : $sm) {
-    .RentalDetail-image-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        gap: 0;
-        height: 20rem;
-
-        &>div:not(:first-child) {
-            display: none;
-        }
-        &>div:first-child {
-            height: 20rem;
-        }
+    & > div:not(:first-child) {
+      height: 15rem;
     }
-
-    .RentalDetail-image-quantity {
-        display: block;
+    & > div:first-child {
+      height: 30rem;
     }
-}
+  }
 
-@media (min-width : $sm) and (max-width: $md) {
-    .RentalDetail-image-container {
-        height: 22rem;
-
-        &>div:not(:first-child) {
-            height: 11rem;
-        }
-        & > div:first-child {
-            height: 22rem;
-        }
-    }
-}
-
-@media (min-width : $md) and (max-width: $lg){
-    .RentalDetail-image-container {
-        height: 28rem;
-
-        &>div:not(:first-child) {
-            height: 14rem;
-        }
-        & > div:first-child {
-            height: 28rem;
-        }
-    
-    }
-}
-@media (min-width : $lg) {
-    .RentalDetail-image-container {
-        height: 30rem;
-
-        &>div:not(:first-child) {
-            height: 15rem;
-        }
-        & > div:first-child {
-            height: 30rem;
-        }
-    }
+  .RentalDetail-map {
+    height: 30rem;
+  }
 }

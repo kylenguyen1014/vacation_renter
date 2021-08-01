@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { userQueryDetailRental } from '../../../react-query/useQueryRental';
 import { useHistory, useParams } from 'react-router-dom';
-import { Button, Container, Divider, Grid, Hidden, Typography } from '@material-ui/core';
+import { Button, Container, Divider, Grid, Typography } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import SkeletonLoading from '../../SkeletonLoading/SkeletonLoading';
 import './RentalDetail.scss';
@@ -24,6 +24,8 @@ import feathersClient from '../../../API/feathersClient';
 import { FeatherServices } from '../../../API/featherServices';
 import { fetchDataBegin, fetchDataStop } from '../../../redux/fetching.slices/fetching.slices';
 import { errorMessageReturn } from '../../../utils/errorMesageReturnUtils';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 interface MapViewPort {
     longitude: number | undefined;
@@ -32,6 +34,9 @@ interface MapViewPort {
 }
 
 function RentalDetail(): ReactElement {
+    const theme = useTheme();
+    const matchMdDown = useMediaQuery(theme.breakpoints.down('md'));
+    
     const { rentalId } = useParams<{ rentalId: string }>()
     const history = useHistory()
     const dispatch = useDispatch()
@@ -276,7 +281,8 @@ function RentalDetail(): ReactElement {
                             <Grid item xs={12} >
                                 <ReactMapGL
                                     width='100%'
-                                    height='30rem'
+                                    height={matchMdDown ? '20rem' : '30rem'}
+                                    className='RentalDetail-map'
                                     {...viewPort}
                                     mapboxApiAccessToken={MAPBOX_TOKEN}
                                     onViewportChange={handleMapMove}
