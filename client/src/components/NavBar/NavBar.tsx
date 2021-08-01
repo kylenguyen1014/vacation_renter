@@ -89,7 +89,7 @@ function NavBar(): ReactElement {
                                 <Button variant='text' size='large' onClick={handleClickExplore}>Explore</Button>
                             </Grid>
                             <Grid item>
-                                <Button variant='contained' size='large' startIcon={<Menu />} onClick={handleSetAnchorEl}><Person /></Button>
+                                <Button variant='contained' size='large' startIcon={<Menu />} onClick={handleSetAnchorEl}><Person />{currentUser ? `${currentUser.firstName}` : ''}</Button>
                             </Grid>
                         </Grid>
                     </Grid>

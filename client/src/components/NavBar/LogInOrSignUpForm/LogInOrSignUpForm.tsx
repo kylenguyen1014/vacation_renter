@@ -5,15 +5,15 @@ import { closeSignInOrUpForm } from '../../../redux/popup.slices/popup.slices'
 import { RootState } from '../../../redux/root-reducer'
 import { Controller, useForm } from 'react-hook-form'
 import { FeatherServices } from '../../../API/featherServices'
-import { User } from '../../../shared/interfaces/User'
+import { UserFull } from '../../../shared/interfaces/User'
 import { fetchDataBegin, fetchDataStop } from '../../../redux/fetching.slices/fetching.slices'
 import Swal from 'sweetalert2'
 import { errorMessageReturn } from '../../../utils/errorMesageReturnUtils'
 import feathersClient from '../../../API/feathersClient'
 
 interface FormInput {
-    firstName?: string;
-    lastName?: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
 }
@@ -50,10 +50,14 @@ function LogInOrSignUpForm(): ReactElement {
 
     }
 
-    const signUp = async (data: FormInput): Promise<User> => {
+    const signUp = async (data: FormInput): Promise<UserFull> => {
         try {
             dispatch(fetchDataBegin())
-            const resp = await feathersClient.service(FeatherServices.users).create(data)
+            const resp = await feathersClient.service(FeatherServices.users).create({
+                ...data,
+                firstName : data.firstName.charAt(0).toUpperCase() + data.firstName.toLocaleLowerCase().slice(1),
+                lastName : data.lastName.charAt(0).toUpperCase() + data.lastName.toLocaleLowerCase().slice(1)
+            })
             dispatch(fetchDataStop())
             return resp
         } catch (error) {
