@@ -2,17 +2,27 @@ import React, { ReactElement, useState } from 'react'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { userQueryDetailRental } from '../../../react-query/useQueryRental';
 import { useParams } from 'react-router-dom';
-import { Container, Divider, Grid, Hidden, Typography } from '@material-ui/core';
+import { Button, Container, Divider, Grid, Hidden, Typography } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import SkeletonLoading from '../../SkeletonLoading/SkeletonLoading';
 import './RentalDetail.scss';
 import ImageDialog from '../../ImageDialog/ImageDialog';
 import { Star } from '@material-ui/icons';
+import { useQueryListReviewsByRental } from '../../../react-query/useQueryReview';
+import ReviewItem from '../ReviewItem/ReviewItem';
+import ReviewDialog from '../../ReviewDialog/ReviewDialog';
+import LeaveReviewDialog from '../../LeaveReviewDialog/LeaveReviewDialog';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root-reducer';
 
 function RentalDetail(): ReactElement {
     const { rentalId } = useParams<{ rentalId: string }>()
-    const { data: rentalDetail, isLoading } = userQueryDetailRental(rentalId)
+    const { currentUser } = useSelector((state: RootState) => state.user)
+    const { data: rentalDetail, isLoading: isRentalLoading, refetch: refetchRentalDetail } = userQueryDetailRental(rentalId)
+    const { data: reviews, isLoading: isReviewLoading, refetch: refetchReviews } = useQueryListReviewsByRental(rentalId)
     const [isOpenImageDialog, setIsOpenImageDialog] = useState<boolean>(false)
+    const [isShowingAllReviews, setIsShowingAllReviews] = useState<boolean>(false)
+    const [isLeavingAReview, setIsLeavingAReview] = useState<boolean>(false)
 
     const handleCloseImageDialog = () => {
         setIsOpenImageDialog(false)
@@ -22,10 +32,32 @@ function RentalDetail(): ReactElement {
         setIsOpenImageDialog(true)
     }
 
-    if (isLoading) {
+    const handleOpenShowAllReviews = () => {
+        setIsShowingAllReviews(true)
+    }
+
+    const handleCloseShowAllReviews = () => {
+        setIsShowingAllReviews(false)
+    }
+
+    const handleOpenLeavingReview = () => {
+        setIsLeavingAReview(true)
+    }
+
+
+    const handleCloseLeavingReview = () => {
+        setIsLeavingAReview(false)
+    }
+
+    const handleRefresh = () => {
+        refetchRentalDetail()
+        refetchReviews()
+    }
+
+    if (isRentalLoading || isReviewLoading) {
         return <SkeletonLoading />
     }
-    if (!rentalDetail) {
+    if (!rentalDetail || !reviews) {
         return <Typography variant='h3'>Failed to load data...</Typography>
     }
     return (
@@ -34,8 +66,31 @@ function RentalDetail(): ReactElement {
                 <Grid container spacing={3}>
                     <Hidden xsDown>
                         <Grid item xs={12}>
-                            <Typography variant='h5'>{rentalDetail.name}</Typography>
-                            <Typography variant='caption' color='textSecondary'><LocationOnIcon fontSize='small' />{rentalDetail.address}</Typography>
+                            <Grid container alignItems='center'>
+                                <Grid item xs={12}>
+                                    <Typography variant='h5'>{rentalDetail.name}</Typography>
+                                </Grid>
+                                <Grid item container spacing={1}>
+                                    <Grid item>
+                                        <div onClick={handleOpenShowAllReviews}>
+                                            <Grid container spacing={0} alignItems='center' className='RentalDetail-rating'>
+                                                <Grid item>
+                                                    <Star color={rentalDetail.rating > 4 ? 'secondary' : 'inherit'} fontSize='small' />
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant='subtitle2' >
+                                                        {rentalDetail.rating ? ` ${parseFloat(rentalDetail.rating.toString()).toFixed(2)} (${rentalDetail.numberReviews} reviews)` : 'No Review (yet)'}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </div>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant='caption' color='textSecondary'> <LocationOnIcon fontSize='small' />{rentalDetail.address}</Typography>
+
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Hidden>
                     <Grid item xs={12}>
@@ -80,10 +135,30 @@ function RentalDetail(): ReactElement {
                         }
                     </Grid>
                     <Hidden smUp>
-                        <Grid item xs={12}>
-                            <Typography variant='h5'>{rentalDetail.name}</Typography>
-                            <Typography variant='caption' color='textSecondary'><LocationOnIcon fontSize='small' />{rentalDetail.address}</Typography>
-                            <Divider />
+                        <Grid container alignItems='center'>
+                            <Grid item xs={12}>
+                                <Typography variant='h5'>{rentalDetail.name}</Typography>
+                            </Grid>
+                            <Grid item container spacing={1}>
+                                <Grid item>
+                                    <div onClick={handleOpenShowAllReviews}>
+                                        <Grid container spacing={0} alignItems='center' className='RentalDetail-rating'>
+                                            <Grid item>
+                                                <Star color={rentalDetail.rating > 4 ? 'secondary' : 'inherit'} fontSize='small' />
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant='subtitle2' >
+                                                    {rentalDetail.rating ? ` ${parseFloat(rentalDetail.rating.toString()).toFixed(2)} (${rentalDetail.numberReviews} reviews)` : 'No Review (yet)'}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant='caption' color='textSecondary'> <LocationOnIcon fontSize='small' />{rentalDetail.address}</Typography>
+
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Hidden>
                     <Grid item xs={12}>
@@ -116,14 +191,38 @@ function RentalDetail(): ReactElement {
                                     </Typography>
                                 </Grid>
                             </Grid>
-
-
                         </div>
                         <Divider />
                     </Grid>
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
+                            {
+                                reviews.data.map(review => (
+                                    <Grid item key={review._id} xs={12} lg={6}>
+                                        <ReviewItem review={review} />
+                                    </Grid>
+                                ))
+                            }
+                        </Grid>
+                    </Grid>
+                    <Grid item container xs={12} spacing={1}>
+                        {currentUser &&
+                            <Grid item>
+                                <Button variant='outlined' onClick={handleOpenLeavingReview}>Leave a review</Button>
+                            </Grid>
+                        }
+                        {
+                            reviews.total > reviews.data.length &&
+                            <Grid item>
+                                <Button variant='outlined' onClick={handleOpenShowAllReviews}>Show all {reviews.total} reviews</Button>
+                            </Grid>
+                        }
+                    </Grid>
                 </Grid>
             </Container>
+            {isShowingAllReviews && <ReviewDialog open={isShowingAllReviews} onClose={handleCloseShowAllReviews} rentalDetail={rentalDetail} totalReviews={rentalDetail.numberReviews} />}
             <ImageDialog images={rentalDetail.images} open={isOpenImageDialog} onClose={handleCloseImageDialog} />
+            <LeaveReviewDialog open={isLeavingAReview} onClose={handleCloseLeavingReview} rentalId={rentalId} refetchReviews={handleRefresh} />
         </div>
     )
 }

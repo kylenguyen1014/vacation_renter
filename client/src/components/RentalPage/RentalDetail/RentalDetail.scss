@@ -13,7 +13,7 @@
         "first first sec third"
         "first first fourth fifth";
     position: relative;
-
+    
     :hover {
         background-color: rgb(0, 0, 0);
         opacity: 0.8;
@@ -40,6 +40,14 @@
             height: 100%;
             object-fit: cover;
         }
+    }
+}
+
+.RentalDetail-rating {
+    text-decoration: underline;
+    
+    &:hover {
+        cursor: pointer;
     }
 }
 
@@ -87,7 +95,7 @@
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
         gap: 0;
-        height: 22rem;
+        height: 20rem;
 
         &>div:not(:first-child) {
             display: none;
@@ -101,12 +109,18 @@
 
 @media (min-width : $sm) and (max-width: $md) {
     .RentalDetail-image-container {
-        height: 25rem;
+        height: 22em;
 
     }
 }
 
-@media (min-width : $md) {
+@media (min-width : $md) and (max-width: $lg){
+    .RentalDetail-image-container {
+        height: 28rem;
+
+    }
+}
+@media (min-width : $lg) {
     .RentalDetail-image-container {
         height: 30rem;
 
