@@ -3,7 +3,7 @@ export interface Properties {
 
 export interface Geometry {
     type: string;
-    coordinates: number[];
+    coordinates: [number, number];
 }
 
 export interface Context {
