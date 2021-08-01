@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { User } from '../../shared/interfaces/User'
+import { UserFull } from '../../shared/interfaces/User'
 
 type UserSlice = {
-    currentUser: User | undefined
+    currentUser: UserFull | undefined
 }
 const initialState: UserSlice = {
     currentUser: undefined
@@ -12,7 +12,7 @@ const userSlices = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        saveCurrentUser(state, action: PayloadAction<User>) {
+        saveCurrentUser(state, action: PayloadAction<UserFull>) {
             state.currentUser = action.payload
         },
         clearCurrentUser(state) {
