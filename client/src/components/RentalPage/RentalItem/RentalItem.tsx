@@ -1,6 +1,5 @@
 import { Container, Divider, Grid, Typography } from '@material-ui/core';
 import React, { ReactElement } from 'react'
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Rental } from '../../../shared/interfaces/Rental'
 import './RentalItem.scss';
 import empty from '../../../images/empty.png';
