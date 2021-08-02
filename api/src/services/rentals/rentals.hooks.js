@@ -7,14 +7,15 @@ const linkUserToItem = require("../../hooks/link-user-to-item");
 
 const getRatingAndReviewCount = require("../../hooks/get-rating-and-review-count");
 
+
 module.exports = {
   before: {
     all: [populate.compatibility()],
     find: [],
     get: [],
     create: [authenticate("jwt"), linkUserToItem()],
-    update: [authenticate("jwt"), isOwner()],
-    patch: [authenticate("jwt"), isOwner()],
+    update: [authenticate("jwt"), isOwner(), linkUserToItem()],
+    patch: [authenticate("jwt"), isOwner(), linkUserToItem()],
     remove: [authenticate("jwt")],
   },
 
