@@ -47,7 +47,7 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
         }
     });
 
-    const { control, handleSubmit, formState: { errors }, reset, setValue } = useForm<FormInput>()
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm<FormInput>()
 
     const handleAddressSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value) {
