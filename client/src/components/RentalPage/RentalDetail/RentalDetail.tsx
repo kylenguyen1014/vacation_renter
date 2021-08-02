@@ -162,7 +162,6 @@ function RentalDetail(): ReactElement {
                                 </Grid>
                                 <Grid item>
                                     <Typography variant='caption' color='textSecondary'> <LocationOnIcon fontSize='small' />{rentalDetail.address}</Typography>
-
                                 </Grid>
                             </Grid>
                         </Grid>
