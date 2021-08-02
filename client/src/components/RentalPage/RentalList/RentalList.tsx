@@ -11,6 +11,7 @@ import { RentalPaginationSize } from '../../../react-query/useQueryRental'
 import { Rental } from '../../../shared/interfaces/Rental'
 import { useHistory } from 'react-router-dom'
 import { ROUTES } from '../../../routes/routes'
+import empty from '../../../images/empty.png'
 
 interface MapViewPort {
     longitude: number | undefined;
@@ -116,7 +117,7 @@ function RentalList(): ReactElement {
                                         <div className='PopUp-container' onClick={() => history.push(ROUTES._RENTAL_DETAIL(selectedRental._id))}>
                                             <Grid container direction='column'>
                                                 <Grid item>
-                                                    <img src={selectedRental.images.length > 0 ? selectedRental.images[0].url : ''} alt='' className='PopUp-image' />
+                                                    <img src={selectedRental.images.length > 0 ? selectedRental.images[0].url : empty} alt='' className='PopUp-image' />
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography variant='body1' noWrap className='PopUp-rental-name'>{selectedRental.name}</Typography>
