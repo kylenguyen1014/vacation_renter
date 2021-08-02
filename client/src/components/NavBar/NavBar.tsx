@@ -68,8 +68,8 @@ function NavBar(): ReactElement {
 
     const isOpen = Boolean(anchorEl)
     return (
-        <div>
-            <AppBar classes={{ root: 'NavBar-root' }} color='inherit' position='sticky'>
+        <div className='NavBar-root' >
+            <AppBar color='inherit' position='fixed'>
                 <Grid container spacing={1} justifyContent='space-between' alignContent='center'>
                     <Grid item className='NavBar-logo'>
                         <span onClick={handleClickLogo}>
