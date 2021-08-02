@@ -248,7 +248,7 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
                         <Typography variant='subtitle2'>Image</Typography>
                         <div {...getRootProps({ className: 'Image-dropzone' })}>
                             <input {...getInputProps()} />
-                            <p>Drag 'n' drop some files here, or click to select files</p>
+                            <p>{isEditting ? 'Upload new set of images? This will override the old images.' : 'Drag & drop some files here, or click to select files'}</p>
                         </div>
                         <aside className='ImageUpload-thumbnail-container'>
                             {thumbs}
