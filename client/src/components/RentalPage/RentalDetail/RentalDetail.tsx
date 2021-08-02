@@ -36,7 +36,7 @@ interface MapViewPort {
 function RentalDetail(): ReactElement {
     const theme = useTheme();
     const matchMdDown = useMediaQuery(theme.breakpoints.down('md'));
-    
+
     const { rentalId } = useParams<{ rentalId: string }>()
     const history = useHistory()
     const dispatch = useDispatch()

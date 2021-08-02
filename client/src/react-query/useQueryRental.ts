@@ -24,5 +24,5 @@ export const userQueryDetailRental = (rentalId: string): QueryObserverResult<Ren
     return useQuery<Rental, AxiosError>(QUERYKEYS.RENTAL_DETAIL(rentalId), async () => {
         const data: Rental = await feathersClient.service(FeatherServices.rentals).get(rentalId);
         return data;
-    })
+    }, { enabled: !!rentalId})
 }

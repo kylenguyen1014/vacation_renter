@@ -1,5 +1,5 @@
 import { Button, Container, Grid, InputAdornment, TextField, Typography } from '@material-ui/core'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Autocomplete } from '@material-ui/lab'
 import { Feature, GeoCoding } from '../../../shared/interfaces/GeoCoding'
@@ -17,6 +17,7 @@ import { fetchDataBegin, fetchDataStop } from '../../../redux/fetching.slices/fe
 import { errorMessageReturn } from '../../../utils/errorMesageReturnUtils'
 import { useHistory } from 'react-router-dom'
 import { ROUTES } from '../../../routes/routes'
+import { userQueryDetailRental } from '../../../react-query/useQueryRental'
 
 type FormInput = {
     name: string;
@@ -47,6 +48,7 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
         }
     });
 
+    const { data: rentalDetail } = userQueryDetailRental(rentalId || '')
     const { control, handleSubmit, formState: { errors }, setValue } = useForm<FormInput>()
 
     const handleAddressSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +78,7 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
 
     const submit = async (data: FormInput) => {
         const fd = new FormData()
-        files.forEach(file => fd.append('images', file))
+        files.forEach(file => fd.append('imagesUpload', file))
         fd.append('name', data.name)
         fd.append('description', data.description)
         fd.append('spec', JSON.stringify({bath: data.bath, bed:data.bed}))
@@ -85,13 +87,23 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
         fd.append('price', data.price.toString())
         try {
             dispatch(fetchDataBegin())
-            const newRental : Rental = await feathersClient.service(FeatherServices.rentals).create(fd, {
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-              })
-            dispatch(fetchDataStop())
-            handleGoToRentalDetail(newRental._id)
+            if (isEditting && rentalDetail) {
+                const newUpdatedRental : Rental = await feathersClient.service(FeatherServices.rentals).update(rentalDetail?._id ,fd, {
+                    headers: {
+                      'Content-Type': 'multipart/form-data'
+                    }
+                  })
+                  dispatch(fetchDataStop())
+                  handleGoToRentalDetail(newUpdatedRental._id)
+            } else {
+                const newRental : Rental = await feathersClient.service(FeatherServices.rentals).create(fd, {
+                    headers: {
+                      'Content-Type': 'multipart/form-data'
+                    }
+                  })
+                  dispatch(fetchDataStop())
+                  handleGoToRentalDetail(newRental._id)
+            }
         } catch (error) {
             dispatch(fetchDataStop())
             Swal.fire({
@@ -101,6 +113,24 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
             })
         }
     }
+
+    useEffect(() => {
+        if (rentalDetail) {
+            setValue('name', rentalDetail.name)
+            axios.get<GeoCoding>(MAPBOX_QUERY_SEARCH(rentalDetail.address))
+                .then(resp => {
+                    setValue('address', resp.data.features[0] || null)
+                })
+                .catch(err => {
+                    console.log(err)
+                    setValue('address', null)
+                })
+            setValue('price', rentalDetail.price)
+            setValue('description', rentalDetail.description)
+            setValue('bed', rentalDetail.spec.bed)
+            setValue('bath', rentalDetail.spec.bath)
+        }
+    }, [rentalDetail, setValue])
 
     const thumbs = files.map(file => (
         <div className='ImageUpload-thumbnail' key={file.path}>
@@ -115,7 +145,7 @@ function NewOrEditRentalForm({ isEditting, rentalId }: Props): ReactElement {
     return (
         <Container maxWidth='md' fixed>
             <form onSubmit={handleSubmit(submit)}>
-                <Typography variant='h5' align='center'>{isEditting ? 'Edit Rental' : 'Host a rental'}{rentalId}</Typography>
+                <Typography variant='h5' align='center'>{isEditting ? 'Edit Rental' : 'Host a rental'}</Typography>
                 <Grid container spacing={1}>
                     <Grid item xs={12}>
                         <Typography variant='subtitle2'>Name</Typography>
