@@ -1,5 +1,5 @@
 {
   "host": "v-rental-api.herokuapp.com",
   "port": "PORT",
-  "mongodb": "mongodb+srv://v-rental-user:<PzvfV77xzLrUH4I5>@cluster0.bacwz.mongodb.net/server?retryWrites=true&w=majority"
+  "mongodb": "DB_URL"
 }
