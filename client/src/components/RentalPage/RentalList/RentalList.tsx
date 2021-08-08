@@ -3,6 +3,8 @@ import { ReactElement, useState } from 'react'
 import { userQueryListRental } from '../../../react-query/useQueryRental'
 import SkeletonLoading from '../../SkeletonLoading/SkeletonLoading'
 import RentalItem from '../RentalItem/RentalItem'
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import mapboxgl from "!mapbox-gl";
 import ReactMapGL, { Marker, Popup, ViewportProps } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MAPBOX_TOKEN } from '../../../shared/constants/MapBox'
@@ -12,6 +14,10 @@ import { Rental } from '../../../shared/interfaces/Rental'
 import { useHistory } from 'react-router-dom'
 import { ROUTES } from '../../../routes/routes'
 import empty from '../../../images/empty.png'
+
+// @ts-ignore
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 interface MapViewPort {
     longitude: number | undefined;

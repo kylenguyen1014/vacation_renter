@@ -26,6 +26,11 @@ import { fetchDataBegin, fetchDataStop } from '../../../redux/fetching.slices/fe
 import { errorMessageReturn } from '../../../utils/errorMesageReturnUtils';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import mapboxgl from "!mapbox-gl";
+// @ts-ignore
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 interface MapViewPort {
     longitude: number | undefined;
