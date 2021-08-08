@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute'
 import CreateARental from '../components/RentalPage/CreateARental/CreateARental'

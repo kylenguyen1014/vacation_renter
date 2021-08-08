@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from '@material-ui/core'
-import React, { ReactElement, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { userQueryListRental } from '../../../react-query/useQueryRental'
 import SkeletonLoading from '../../SkeletonLoading/SkeletonLoading'
 import RentalItem from '../RentalItem/RentalItem'

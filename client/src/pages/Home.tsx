@@ -1,6 +1,6 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import { House } from '@material-ui/icons';
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../routes/routes';
 

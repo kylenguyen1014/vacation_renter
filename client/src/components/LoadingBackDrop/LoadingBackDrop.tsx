@@ -1,5 +1,5 @@
 import { Backdrop, LinearProgress } from '@material-ui/core'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { useIsFetching } from 'react-query'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/root-reducer'

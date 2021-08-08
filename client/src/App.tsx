@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.scss';
 import Home from './pages/Home';
-import 'animate.css'
 import Rental from './pages/Rental';
 import NavBar from './components/NavBar/NavBar';
 import LogInOrSignUpForm from './components/NavBar/LogInOrSignUpForm/LogInOrSignUpForm';

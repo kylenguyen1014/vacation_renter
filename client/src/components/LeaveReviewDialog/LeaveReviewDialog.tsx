@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogContent, DialogTitle, Divider, Grid, IconButton, TextField, Typography } from '@material-ui/core'
 import { CancelOutlined, Send } from '@material-ui/icons'
 import { Rating } from '@material-ui/lab'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'

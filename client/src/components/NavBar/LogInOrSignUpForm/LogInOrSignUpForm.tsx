@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Button, Dialog, DialogContent, DialogTitle, Divider, Grid, Slide, TextField, Typography } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeSignInOrUpForm } from '../../../redux/popup.slices/popup.slices'

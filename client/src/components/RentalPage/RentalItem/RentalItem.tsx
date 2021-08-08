@@ -1,5 +1,5 @@
 import { Container, Divider, Grid, Typography } from '@material-ui/core';
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { Rental } from '../../../shared/interfaces/Rental'
 import './RentalItem.scss';
 import empty from '../../../images/empty.png';
