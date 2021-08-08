@@ -1,4 +1,5 @@
 {
-  "host": "api-app.feathersjs.com",
-  "port": "PORT"
+  "host": "v-rental-api.herokuapp.com",
+  "port": "PORT",
+  "mongodb": "DB_URL"
 }
